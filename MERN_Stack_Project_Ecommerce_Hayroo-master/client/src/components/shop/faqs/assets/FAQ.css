@@ -1,0 +1,70 @@
+.faq{
+    width: 70vw;
+    min-width: 50rem;
+    margin: 8rem auto;
+}
+h1, p{
+    margin: 0;
+}
+hr{
+    border: none;
+    height: .0625rem;
+    background-color: hsl(240, 4%, 71%);
+}
+
+.card{
+    width:100%;
+    background-color: hsl(0, 0%, 95%);
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 2rem;
+}
+
+
+.show-answer{
+    display: block;
+    font-size: .75rem;
+    color: hsl(237, 12%, 33%);
+}
+.hide-answer{
+    display: none;
+}
+.qANDa{
+    width: 100%;
+}
+.question{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.question p{
+    margin: .5rem 0;
+}
+.question img{
+    width: .8rem;
+    height: .5rem;
+    position: relative;
+    top: .9rem;
+    right: .5rem;
+}
+.up-arrow{
+    rotate: 180deg;
+}
+.arrow{
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.question:hover{
+    color:  hsl(14, 88%, 65%);
+    cursor: pointer;
+}
+.question-show{
+    color: black;
+}
