@@ -1,4 +1,4 @@
-import { createOrder } from "./FetchApi";
+import { createOrder,checkoutEmailVerify,checkoutEmailOTP } from "./FetchApi";
 import axios from "axios";
 export const fetchData = async (cartListProduct, dispatch) => {
   dispatch({ type: "loading", payload: true });
@@ -140,4 +140,40 @@ export const checkoutRazorPayHandler = async (
   };
   const razor = new window.Razorpay(options);
   razor.open();
+};
+
+
+export const verifyEmail = async(email,dispatch) =>{
+  if (!email) {
+    return console.log("please enter email")
+  } 
+  try {
+    let resposeData = await checkoutEmailVerify(email);
+    if (resposeData.success) {
+      
+      return dispatch({ type: "EmailVerified", payload: true });
+    } else if (resposeData.error) {
+      console.log(resposeData.error);
+      dispatch({ type: "EmailVerified", payload: false });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+export const verifyOTP = async(otp,dispatch) =>{
+  if (!otp) {
+    return console.log("please enter email")
+  } 
+  try {
+    let resposeData = await checkoutEmailOTP(otp);
+    
+    if (resposeData.success) {
+      return dispatch({ type: "OtpVerified", payload: true });
+    } else if (resposeData.error) {
+      console.log(resposeData.error);
+      dispatch({ type: "OtpVerified", payload: false });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }

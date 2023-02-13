@@ -49,6 +49,13 @@ const handleForgetClick = () =>{
   layoutDispatch({ type: "forgetPasswordModalToggle", payload: true }) 
 }
 
+const setValues = (e,{value}) =>{
+  setData({...data, [e.target.name]:value})
+}
+
+const setReCaptcha= (e) =>{
+  setData({...data, isVerified:true})
+}
   return (
     <Fragment>
       <div className="text-center text-2xl mb-6">Login</div>
@@ -67,12 +74,16 @@ const handleForgetClick = () =>{
           </label>
           <input
             onChange={(e) => {
-              setData({ ...data, email: e.target.value, error: false });
+              const email =  e.target.value;
+              console.log(email);
+              setValues(e, {value:email})
+              console.log(data);
               layoutDispatch({ type: "loginSignupError", payload: false });
             }}
             value={data.email}
             type="text"
             id="name"
+            name="email"
             className={`${
               !data.error ? "" : "border-red-500"
             } px-4 py-2 focus:outline-none border`}
@@ -85,11 +96,13 @@ const handleForgetClick = () =>{
           </label>
           <input
             onChange={(e) => {
-              setData({ ...data, password: e.target.value, error: false });
+              const password = e.target.value
+              setValues(e,{value:password});
               layoutDispatch({ type: "loginSignupError", payload: false });
             }}
             value={data.password}
             type="password"
+            name="password"
             id="password"
             className={`${
               !data.error ? "" : "border-red-500"
@@ -113,10 +126,12 @@ const handleForgetClick = () =>{
           </button>
         </div>
         {layoutData.isCaptchaLoaded && <Recaptcha
-        sitekey="6LctRTIkAAAAAEL3pPM0Hm2UePLJc8ZMw_qwerty"
+        sitekey="6LcvnXQkAAAAALKub8P69BFdxtdDoqAuB0ZXTIOH"
         render="explicit"
         onloadCallback={() => console.log("reCaptcha loaded successfully")}
-        verifyCallback={() => setData({...data, isVerified:!data.isVerified})}
+        verifyCallback={() =>
+          setReCaptcha()
+        }
         />}
         <div
           onClick={(e) => formSubmit()}

@@ -5,7 +5,7 @@ import { subTotal, quantity, totalCost } from "../partials/Mixins";
 
 import { cartListProduct } from "../partials/FetchApi";
 import { getBrainTreeToken, getPaymentProcess, updateStockReq } from "./FetchApi";
-import { fetchData, fetchbrainTree, pay,checkoutRazorPayHandler } from "./Action";
+import { fetchData, fetchbrainTree, pay,checkoutRazorPayHandler, verifyEmail,verifyOTP } from "./Action";
 
 import DropIn from "braintree-web-drop-in-react";
 
@@ -23,6 +23,8 @@ export const CheckoutComponent = (props) => {
     clientToken: null,
     instance: {},
   });
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
 
   useEffect(() => {
     fetchData(cartListProduct, dispatch);
@@ -108,20 +110,84 @@ export const CheckoutComponent = (props) => {
                       Phone
                     </label>
                     <input
+                     type="text"  id="phone" name="phone" pattern="[0-9]{10}"
+                     maxlength="10"
                       value={state.phone}
                       onChange={(e) =>
+
                         setState({
                           ...state,
-                          phone: e.target.value,
+                          phone: e.target.value.replace(/[^0-9]/gi, ""),
                           error: false,
                         })
                       }
-                      type="number"
-                      id="phone"
                       className="border px-4 py-2"
                       placeholder="+880"
                     />
                   </div>
+                  {data.isEmailVerified ? <>
+                    <div className="flex flex-col py-2 mb-2">
+                    <label htmlFor="otp" className="pb-2">
+                      OTP
+                    </label>
+                    <input
+                      value={otp}
+                      maxLength={4}
+                      onChange={(e) =>
+                        setOtp(e.target.value)
+                      }
+                      type="number"
+                      id="otp"
+                      className="border px-4 py-2"
+                      placeholder="0000"
+                    />
+                    <div
+                    onClick={(e) =>
+                      {
+                        
+                        verifyOTP(
+                          otp,
+                          dispatch
+                        );
+                      }
+                    }
+                    className="w-full px-4 py-2 text-center text-white font-semibold cursor-pointer"
+                    style={{ background: "hsl(240, 4%, 71%)" }}
+                  >
+                    Verify Email
+                  </div>
+                  </div></>:<>
+                    <div className="flex flex-col py-2 mb-2">
+                    <label htmlFor="email" className="pb-2">
+                      Email
+                    </label>
+                    <input
+                      value={email}
+                      onChange={(e) =>
+                        setEmail(e.target.value)
+                      }
+                      type="email"
+                      id="email"
+                      className="border px-4 py-2"
+                      placeholder="sample@gmail.com"
+                    />
+                    <div
+                    onClick={(e) =>
+                      {
+                        
+                        verifyEmail(
+                          email,
+                          dispatch
+                        );
+                      }
+                    }
+                    className="w-full px-4 py-2 text-center text-white font-semibold cursor-pointer"
+                    style={{ background: "hsl(240, 4%, 71%)" }}
+                  >
+                    Verify Email
+                  </div>
+                  </div>
+                  </>}
                   <DropIn
                     options={{
                       authorization: state.clientToken,
@@ -131,7 +197,8 @@ export const CheckoutComponent = (props) => {
                     }}
                     onInstance={(instance) => (state.instance = instance)}
                   />
-                  <div
+                  {data.isOTPVerified && <>
+                    <div
                     onClick={(e) =>
                       {
                         handleStock();
@@ -166,6 +233,7 @@ export const CheckoutComponent = (props) => {
                   >
                     Pay now
                   </div>
+                  </>}
                 </div>
               </Fragment>
             ) : (
@@ -217,13 +285,13 @@ const CheckoutProducts = ({ products }) => {
                     {product.pName}
                   </div>
                   <div className="md:ml-6 font-semibold text-gray-600 text-sm">
-                    Price : ${product.pPrice}.00{" "}
+                    Price : ₹{product.pPrice}.00{" "}
                   </div>
                   <div className="md:ml-6 font-semibold text-gray-600 text-sm">
                     Quantitiy : {quantity(product._id)}
                   </div>
                   <div className="font-semibold text-gray-600 text-sm">
-                    Subtotal : ${subTotal(product._id, product.pPrice)}.00
+                    Subtotal : ₹{subTotal(product._id, product.pPrice)}.00
                   </div>
                 </div>
               </div>

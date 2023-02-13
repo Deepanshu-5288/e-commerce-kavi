@@ -179,7 +179,7 @@ const Signup = (props) => {
           </button>
         </div>
         {layoutData.isCaptchaLoaded && <Recaptcha
-        sitekey="6LctRTIkAAAAAEL3pPM0Hm2UePLJc8ZMw_qwerty"
+        sitekey="6LcvnXQkAAAAALKub8P69BFdxtdDoqAuB0ZXTIOH"
         render="explicit"
         onloadCallback={() => console.log("reCaptcha loaded successfully")}
         verifyCallback={() => setData({...data, isVerified:!data.isVerified})}

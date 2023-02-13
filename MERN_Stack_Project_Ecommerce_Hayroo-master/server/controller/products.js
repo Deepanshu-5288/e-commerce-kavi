@@ -190,7 +190,7 @@ class Product {
       try {
         let singleProduct = await productModel
           .findById(pId)
-          .populate("pCategory", "cName")
+          .populate("pCategory", "cName cStatus")
           .populate("pRatingsReviews.user", "name email userImage");
         if (singleProduct) {
           return res.json({ Product: singleProduct });
@@ -401,6 +401,7 @@ class Product {
     cartProduct.forEach(async (item) => {
       try {
         const prod = await productModel.findById(item.id);
+        console.log(prod.pQuantity,item.quantitiy);
       prod.pQuantity -= item.quantitiy;
       await prod.save();
       } catch (error) {

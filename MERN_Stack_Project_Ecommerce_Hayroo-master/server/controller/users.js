@@ -177,7 +177,7 @@ async forgetPassword(req, res, next){
   try {
       await sendEmail({
           email:user.email,
-          subject:"Financial reset password",
+          subject:"Hayroo reset password",
           message,
       })
       res.status(200).json({

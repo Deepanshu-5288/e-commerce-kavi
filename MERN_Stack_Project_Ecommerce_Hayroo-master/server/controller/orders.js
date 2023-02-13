@@ -1,7 +1,78 @@
 const orderModel = require("../models/orders");
 const returnModel = require("../models/returnOrder");
 const productModel = require("../models/products");
+const sendEmail = require("../utils/sendMail");
+const userModel = require("../models/users");
 class Order {
+  async VerifyEmail(req, res) {
+    const {email,user} = req.body;
+    if(!email){
+      return res.json({
+        error:"email field is mandatory"
+      })
+  }
+  const userOrder = await userModel.findById(user);
+  if(!user || !userOrder){
+      return res.json({
+        error:"User is not logged in"
+      })
+  }
+
+  const random4Digits = Math.floor(1000 + Math.random() * 9000);
+
+  const message = `Your 4 digits OTP is :- \n\n ${random4Digits} \n\n If you have not requested it please ignore it.`;
+userOrder.checkoutOtp = random4Digits;
+await userOrder.save({validateBeforeSave:false});
+  try {
+      await sendEmail({
+          email:email,
+          subject:"Hayroo verify email",
+          message,
+      })
+      res.status(200).json({
+          success:true,
+          message:`Email sent to ${email} successfully`,
+      })
+  } catch (error) {
+      userOrder.checkoutOtp = undefined;
+      await userOrder.save({validateBeforeSave:false});
+      return res.json({
+        error:error.message
+      });
+  }
+  }
+
+  async otpVerify(req, res, next){
+    const {uId,otp} = req.body;
+    const user = await userModel.findById(uId);
+  
+    if(!user){
+        return res.json({
+          error: "User in not available"
+        })
+    }
+    if(!otp){
+        return res.json({
+          error:"all fields are required"
+        })
+    }
+    // console.log(user);
+    if(user.checkoutOtp !== Number(otp)){
+      user.checkoutOtp= undefined;
+    await user.save();
+      res.status(400).json({
+        success:false,
+        message:"Otp verification failed"
+      })
+    }
+    user.checkoutOtp= undefined;
+    await user.save();
+    res.status(200).json({
+      success:true,
+      message:"OTP verified successfully"
+    })
+  }
+  
   async getAllOrders(req, res) {
     const keyword =req.query.keyword ? {
       transactionId:{

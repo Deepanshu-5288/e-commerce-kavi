@@ -45,7 +45,8 @@ const userSchema = new mongoose.Schema(
     },
     googleId:String,
     resetPasswordToken:String,
-    resetPasswordExpire:Date
+    resetPasswordExpire:Date,
+    checkoutOtp:Number
   },
   { timestamps: true }
 );

@@ -6,6 +6,7 @@ export const getSingleProduct = async (pId) => {
     let res = await axios.post(`${apiURL}/api/product/single-product`, {
       pId: pId,
     });
+    console.log(res.data);
     return res.data;
   } catch (error) {
     console.log(error);

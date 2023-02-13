@@ -12,10 +12,22 @@ export const layoutState = {
   loading: false,
   isCaptchaLoaded:false,
   isLoginOrSignup:true,
+  isEmailVerified:false,
+  isOTPVerified:false,
 };
 
 export const layoutReducer = (state, action) => {
   switch (action.type) {
+    case "OtpVerified":
+      return {
+        ...state,
+        isOTPVerified : action.payload,
+      }
+    case "EmailVerified":
+      return {
+        ...state,
+        isEmailVerified : action.payload,
+      }
     case "LoginOrSignup":
       return {
         ...state,

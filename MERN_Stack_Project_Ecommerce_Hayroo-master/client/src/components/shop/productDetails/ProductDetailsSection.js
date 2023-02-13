@@ -374,6 +374,7 @@ const ProductDetailsSection = (props) => {
                       In cart
                     </div>
                   ) : (
+                    sProduct.pStatus==="Active" && sProduct.pCategory.cStatus==="Active" ?
                     <div
                       onClick={(e) =>
                         addToCart(
@@ -392,6 +393,14 @@ const ProductDetailsSection = (props) => {
                     >
                       Add to cart
                     </div>
+                    :
+                    <div
+                    style={{ background: "#303031" }}
+                    disabled={true}
+                    className="px-4 py-2 text-white opacity-50 cursor-not-allowed text-center uppercase"
+                  >
+                    Product not available
+                  </div>
                   )}
                 </Fragment>
               ) : (

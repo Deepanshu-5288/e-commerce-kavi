@@ -9,5 +9,6 @@ router.post("/create-order", ordersController.postCreateOrder);
 router.post("/update-order", ordersController.postUpdateOrder);
 router.post("/return-order", ordersController.postReturnOrder);
 router.post("/delete-order", ordersController.postDeleteOrder);
-
+router.post("/verify-email", ordersController.VerifyEmail);
+router.post("/verify-otp", ordersController.otpVerify);
 module.exports = router;
