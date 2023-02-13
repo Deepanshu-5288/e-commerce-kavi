@@ -57,20 +57,24 @@ await userOrder.save({validateBeforeSave:false});
         })
     }
     // console.log(user);
-    if(user.checkoutOtp !== Number(otp)){
+    console.log(user, otp);
+    if(user.checkoutOtp === Number(otp)){
       user.checkoutOtp= undefined;
-    await user.save();
-      res.status(400).json({
-        success:false,
-        message:"Otp verification failed"
-      })
-    }
-    user.checkoutOtp= undefined;
     await user.save();
     res.status(200).json({
       success:true,
       message:"OTP verified successfully"
     })
+    }else{
+      console.log(user, otp);
+      user.checkoutOtp= undefined;
+      await user.save();
+        res.json({
+          success:false,
+          message:"Otp verification failed"
+        })
+    }
+    
   }
   
   async getAllOrders(req, res) {

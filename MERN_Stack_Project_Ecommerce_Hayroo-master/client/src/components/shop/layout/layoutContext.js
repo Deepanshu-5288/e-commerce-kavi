@@ -14,6 +14,7 @@ export const layoutState = {
   isLoginOrSignup:true,
   isEmailVerified:false,
   isOTPVerified:false,
+  isOTPError:false,
 };
 
 export const layoutReducer = (state, action) => {
@@ -22,6 +23,7 @@ export const layoutReducer = (state, action) => {
       return {
         ...state,
         isOTPVerified : action.payload,
+        isOTPError:!action.payload,
       }
     case "EmailVerified":
       return {

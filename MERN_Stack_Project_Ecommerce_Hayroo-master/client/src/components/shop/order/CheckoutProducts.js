@@ -111,7 +111,8 @@ export const CheckoutComponent = (props) => {
                     </label>
                     <input
                      type="text"  id="phone" name="phone" pattern="[0-9]{10}"
-                     maxlength="10"
+                     maxLength="10"
+                     minLength="10"
                       value={state.phone}
                       onChange={(e) =>
 
@@ -125,7 +126,9 @@ export const CheckoutComponent = (props) => {
                       placeholder="+880"
                     />
                   </div>
+                  
                   {data.isEmailVerified ? <>
+                  {data.isOTPError ? <h1>Please refresh the page and verify email again</h1>:<>
                     <div className="flex flex-col py-2 mb-2">
                     <label htmlFor="otp" className="pb-2">
                       OTP
@@ -156,7 +159,8 @@ export const CheckoutComponent = (props) => {
                   >
                     Verify Email
                   </div>
-                  </div></>:<>
+                  </div></>}
+                  </>:<>
                     <div className="flex flex-col py-2 mb-2">
                     <label htmlFor="email" className="pb-2">
                       Email
@@ -188,6 +192,7 @@ export const CheckoutComponent = (props) => {
                   </div>
                   </div>
                   </>}
+                
                   <DropIn
                     options={{
                       authorization: state.clientToken,
